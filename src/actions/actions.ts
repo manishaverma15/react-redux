@@ -3,7 +3,7 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phoneNumber: string;

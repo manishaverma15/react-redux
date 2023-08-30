@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUser, updateUser, deleteUser, User } from '../actions/actions';
+import { v4 as uuidv4 } from 'uuid';
 import '../styles/Form.css';
 
 interface FormProps {
@@ -9,9 +10,10 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ user }) => {
   const dispatch = useDispatch();
+  const users = useSelector((state: any) => state.users);
 
   const [formData, setFormData] = useState<User>({
-    id: user?.id || 0,
+    id: uuidv4(),
     name: user?.name || '',
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
@@ -34,7 +36,7 @@ const Form: React.FC<FormProps> = ({ user }) => {
     }
 
     setFormData({
-      id: 0,
+      id: uuidv4(),
       name: '',
       email: '',
       phoneNumber: ''
@@ -60,7 +62,7 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <label>
           Email:
           <input
-            type="text"
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
@@ -70,7 +72,7 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <label>
           Phone Number:
           <input
-            type="text"
+            type="number"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleChange}
@@ -79,6 +81,35 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <br />
         <button type="submit">{user ? 'Update User' : 'Add User'}</button>
       </form>
+
+      {users.length > 0 ? (
+        <div>
+          <h2>Submitted Users</h2>
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((u: User) => (
+                <tr key={u.id}>
+                  <td>{u.name}</td>
+                  <td>{u.email}</td>
+                  <td>{u.phoneNumber}</td>
+                  <td><button>Edit</button></td>
+                  <td><button>Delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+        : ''}
     </>
   )
 }
