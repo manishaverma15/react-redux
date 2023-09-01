@@ -10,18 +10,12 @@ const userReducer = (state: User[] = initialUserState, action: any) => {
       return [...state, action.payload];
 
     case UPDATE_USER:
-      return [
-        ...state,
-        state.map((user) =>
-          user.id === action.payload.id ? action.payload : user
-        )
-      ]
+      return state.map((user) =>
+        user.id === action.payload.id ? action.payload : user
+      )
 
     case DELETE_USER:
-      return [
-        ...state,
-        state.filter((user) => user.id !== action.payload)
-      ]
+      return state.filter((user) => user.id !== action.payload)
     default:
       return state;
   };

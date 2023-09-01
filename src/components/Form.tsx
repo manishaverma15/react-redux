@@ -11,6 +11,7 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ user }) => {
   const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users);
+  const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState<User>({
     id: uuidv4(),
@@ -28,12 +29,15 @@ const Form: React.FC<FormProps> = ({ user }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (user) {
+
+    if (isEditing) {
       dispatch(updateUser(formData));
     }
     else {
       dispatch(addUser(formData));
     }
+
+    setIsEditing(false)
 
     setFormData({
       id: uuidv4(),
@@ -41,7 +45,21 @@ const Form: React.FC<FormProps> = ({ user }) => {
       email: '',
       phoneNumber: ''
     })
+
   };
+
+  const handleDelete = (id: any) => {
+    dispatch(deleteUser(id))
+  }
+
+  const handleEdit = (id: any) => {
+    const selectedUser = users.find((user: User) => user.id === id)
+    console.log('selected-user', selectedUser)
+    if (selectedUser) {
+      setFormData(selectedUser)
+    }
+    setIsEditing(true);
+  }
 
   return (
     <>
@@ -79,7 +97,7 @@ const Form: React.FC<FormProps> = ({ user }) => {
           />
         </label>
         <br />
-        <button type="submit">{user ? 'Update User' : 'Add User'}</button>
+        <button type="submit">{isEditing ? 'Update User' : 'Add User'}</button>
       </form>
 
       {users.length > 0 ? (
@@ -96,13 +114,13 @@ const Form: React.FC<FormProps> = ({ user }) => {
               </tr>
             </thead>
             <tbody>
-              {users.map((u: User) => (
-                <tr key={u.id}>
-                  <td>{u.name}</td>
-                  <td>{u.email}</td>
-                  <td>{u.phoneNumber}</td>
-                  <td><button>Edit</button></td>
-                  <td><button>Delete</button></td>
+              {users.map((user: User) => (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phoneNumber}</td>
+                  <td><button onClick={() => handleEdit(user.id)}>Edit</button></td>
+                  <td><button onClick={() => handleDelete(user.id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
