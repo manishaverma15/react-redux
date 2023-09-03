@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, updateUser, deleteUser, User } from '../actions/actions';
+import { addUser, updateUser, deleteUser, User } from '../../actions/actions';
 import { v4 as uuidv4 } from 'uuid';
-import '../styles/Form.css';
+import './Form.css';
 
 interface FormProps {
   user?: User;
@@ -70,8 +70,8 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <label>
           Name:
           <input
-            type="text"
-            name="name"
+            type='text'
+            name='name'
             value={formData.name}
             onChange={handleChange}
           />
@@ -80,8 +80,8 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <label>
           Email:
           <input
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={formData.email}
             onChange={handleChange}
           />
@@ -90,20 +90,20 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <label>
           Phone Number:
           <input
-            type="number"
-            name="phoneNumber"
+            type='number'
+            name='phoneNumber'
             value={formData.phoneNumber}
             onChange={handleChange}
           />
         </label>
         <br />
-        <button type="submit">{isEditing ? 'Update User' : 'Add User'}</button>
+        <button type='submit'>{isEditing ? 'Update User' : 'Add User'}</button>
       </form>
 
       {users.length > 0 ? (
         <div>
           <h2>Submitted Users</h2>
-          <table className="user-table">
+          <table className='user-table'>
             <thead>
               <tr>
                 <th>Name</th>
