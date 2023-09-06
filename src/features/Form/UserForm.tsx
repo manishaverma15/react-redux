@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUser, updateUser, deleteUser, User } from './UserSlice';
 import { v4 as uuidv4 } from 'uuid';
 import './Form.css';
+import UserTable from '../Form/UserTable';
+
 
 interface FormProps {
   user?: User;
 }
 
-const Form: React.FC<FormProps> = ({ user }) => {
+const UserForm: React.FC<FormProps> = ({ user }) => {
   const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users);
   const [isEditing, setIsEditing] = useState(false);
@@ -99,36 +101,9 @@ const Form: React.FC<FormProps> = ({ user }) => {
         <button type='submit'>{isEditing ? 'Update User' : 'Add User'}</button>
       </form>
 
-      {users.length > 0 ? (
-        <div>
-          <h2>Submitted Users</h2>
-          <table className='user-table'>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user: User) => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phoneNumber}</td>
-                  <td><button onClick={() => handleEdit(user.id)}>Edit</button></td>
-                  <td><button onClick={() => handleDelete(user.id)}>Delete</button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )
-        : ''}
+      <UserTable handleEdit={handleEdit} handleDelete={handleDelete} />
     </>
   )
 }
 
-export default Form;
+export default UserForm;
